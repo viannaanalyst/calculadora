@@ -40,6 +40,7 @@ const ResultadoMultiFormas = ({ resultados, config }) => {
   const totalBruto = resultados.reduce((acc, r) => acc + r.preco, 0)
   const totalLiquido = resultados.reduce((acc, r) => acc + r.valorLiquido, 0)
   const totalTaxas = resultados.reduce((acc, r) => acc + r.totalTaxas, 0)
+  const totalDesejado = resultados.reduce((acc, r) => acc + r.valorDesejado, 0)
 
   const copiarValor = async () => {
     try {
@@ -185,6 +186,10 @@ Gerado por Calculadora de Precificação
         </div>
 
         <div className="space-y-2">
+          <div className="flex justify-between text-sm text-gray-500">
+            <span>Valor desejado (líquido):</span>
+            <span className="font-medium">{formatarMoeda(totalDesejado)}</span>
+          </div>
           <div className="flex justify-between">
             <span className="text-gray-600">Total de taxas:</span>
             <span className="font-medium text-red-600">- {formatarMoeda(totalTaxas)}</span>

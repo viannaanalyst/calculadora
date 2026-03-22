@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { Plus, Trash2, Zap, FileText, CreditCard, ArrowRight } from 'lucide-react'
-import { FORMAS_PAGAMENTO } from '../constants/taxas'
+import { Plus, Trash2, Zap, FileText, CreditCard, ArrowRight, X } from 'lucide-react'
+import { FORMAS_PAGAMENTO, PARCELAS } from '../constants/taxas'
 
 const icones = {
   pix: Zap,
@@ -23,7 +23,7 @@ const SeletorMultiFormas = ({ formas, onChange }) => {
       return
     }
     
-    onChange([...formas, { tipo: formaId, valor: 0 }])
+    onChange([...formas, { tipo: formaId, valor: 0, parcelas: 1 }])
     setMostrarOpcoes(false)
   }
 
@@ -34,6 +34,12 @@ const SeletorMultiFormas = ({ formas, onChange }) => {
   const atualizarValor = (formaId, valor) => {
     onChange(formas.map(f => 
       f.tipo === formaId ? { ...f, valor } : f
+    ))
+  }
+
+  const atualizarParcelas = (formaId, parcelas) => {
+    onChange(formas.map(f => 
+      f.tipo === formaId ? { ...f, parcelas } : f
     ))
   }
 
@@ -57,20 +63,29 @@ const SeletorMultiFormas = ({ formas, onChange }) => {
       {formas.map((forma) => {
         const Icone = icones[forma.tipo]
         const infoForma = FORMAS_PAGAMENTO.find(f => f.id === forma.tipo)
+        const isCartao = forma.tipo === 'cartao'
         
         return (
           <div key={forma.tipo} className={`border-2 rounded-lg p-3 ${cores[forma.tipo]}`}>
-            <div className="flex items-center gap-2 mb-2">
-              <Icone size={18} />
-              <span className="font-medium text-sm">{infoForma.nome}</span>
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <Icone size={18} />
+                <span className="font-medium text-sm">{infoForma.nome}</span>
+                {isCartao && (
+                  <span className="text-xs text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
+                    {forma.parcelas}x
+                  </span>
+                )}
+              </div>
               <button
                 onClick={() => removerForma(forma.tipo)}
-                className="ml-auto p-1 hover:bg-white/50 rounded"
+                className="p-1 hover:bg-white/50 rounded"
               >
-                <Trash2 size={16} className="text-red-500" />
+                <X size={16} className="text-red-500" />
               </button>
             </div>
-            <div className="relative">
+            
+            <div className="relative mb-2">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">
                 R$
               </span>
@@ -90,6 +105,29 @@ const SeletorMultiFormas = ({ formas, onChange }) => {
                            focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
+
+            {isCartao && (
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">Parcelas:</label>
+                <div className="grid grid-cols-6 gap-1">
+                  {PARCELAS.map((num) => (
+                    <button
+                      key={num}
+                      onClick={() => atualizarParcelas(forma.tipo, num)}
+                      className={`
+                        py-1 px-2 rounded text-xs font-medium transition-all
+                        ${forma.parcelas === num
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-white border border-gray-300 text-gray-700 hover:border-blue-400'
+                        }
+                      `}
+                    >
+                      {num}x
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )
       })}
