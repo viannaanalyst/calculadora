@@ -45,6 +45,7 @@ const calcularFormaUnica = ({
       preco: 0,
       valorDesejado: 0,
       valorImposto: 0,
+      imposto,
       taxaFixa: 0,
       taxaPercentual: 0,
       taxaCartaoValor: 0,
@@ -61,6 +62,7 @@ const calcularFormaUnica = ({
     return calcularPixOuBoleto({
       valorDesejado,
       impostoDecimal,
+      imposto,
       taxaFixa: usarTaxaPromocional 
         ? TAXAS_ASAAS.pix.taxaFixaPromocional 
         : TAXAS_ASAAS.pix.taxaFixa,
@@ -71,6 +73,7 @@ const calcularFormaUnica = ({
     return calcularPixOuBoleto({
       valorDesejado,
       impostoDecimal,
+      imposto,
       taxaFixa: TAXAS_ASAAS.boleto.taxaFixa,
     })
   }
@@ -79,6 +82,7 @@ const calcularFormaUnica = ({
     return calcularCartao({
       valorDesejado,
       impostoDecimal,
+      imposto,
       parcelas,
       usarTaxaPromocional,
       usarAntecipacao,
@@ -90,6 +94,7 @@ const calcularFormaUnica = ({
     preco: 0,
     valorDesejado,
     valorImposto: 0,
+    imposto,
     taxaFixa: 0,
     taxaPercentual: 0,
     taxaCartaoValor: 0,
@@ -100,7 +105,7 @@ const calcularFormaUnica = ({
   }
 }
 
-const calcularPixOuBoleto = ({ valorDesejado, impostoDecimal, taxaFixa }) => {
+const calcularPixOuBoleto = ({ valorDesejado, impostoDecimal, imposto, taxaFixa }) => {
   const preco = (valorDesejado + taxaFixa) / (1 - impostoDecimal)
   const valorImposto = preco * impostoDecimal
   const valorLiquido = preco - valorImposto - taxaFixa
@@ -110,6 +115,7 @@ const calcularPixOuBoleto = ({ valorDesejado, impostoDecimal, taxaFixa }) => {
     preco,
     valorDesejado,
     valorImposto,
+    imposto,
     taxaFixa,
     taxaPercentual: 0,
     taxaCartaoValor: 0,
@@ -123,6 +129,7 @@ const calcularPixOuBoleto = ({ valorDesejado, impostoDecimal, taxaFixa }) => {
 const calcularCartao = ({
   valorDesejado,
   impostoDecimal,
+  imposto,
   parcelas,
   usarTaxaPromocional,
   usarAntecipacao,
@@ -155,6 +162,7 @@ const calcularCartao = ({
       preco: Infinity,
       valorDesejado,
       valorImposto: 0,
+      imposto,
       taxaFixa,
       taxaPercentual,
       taxaCartaoValor: 0,
@@ -177,6 +185,7 @@ const calcularCartao = ({
     preco,
     valorDesejado,
     valorImposto,
+    imposto,
     taxaFixa,
     taxaPercentual,
     taxaCartaoValor,
