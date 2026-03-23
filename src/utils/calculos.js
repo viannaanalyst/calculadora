@@ -140,10 +140,14 @@ const obterTaxasCartao = (parcelas, usarTaxaPromocional) => {
     percentual = usarTaxaPromocional 
       ? cartao.parcelas['2x-6x'].percentualPromocional 
       : cartao.parcelas['2x-6x'].percentual
-  } else {
+  } else if (parcelas >= 7 && parcelas <= 12) {
     percentual = usarTaxaPromocional 
       ? cartao.parcelas['7x-12x'].percentualPromocional 
       : cartao.parcelas['7x-12x'].percentual
+  } else {
+    percentual = usarTaxaPromocional 
+      ? cartao.parcelas['13x-21x'].percentualPromocional 
+      : cartao.parcelas['13x-21x'].percentual
   }
   
   return {

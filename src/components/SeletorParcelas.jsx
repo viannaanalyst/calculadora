@@ -8,7 +8,7 @@ const SeletorParcelas = ({ value, onChange, visible }) => {
       <label className="block text-sm font-medium text-gray-700 mb-2">
         Parcelas
       </label>
-      <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
+      <div className="grid grid-cols-7 sm:grid-cols-7 gap-1">
         {PARCELAS.map((num) => (
           <button
             key={num}
